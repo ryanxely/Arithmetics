@@ -1,0 +1,1 @@
+# The libs directory is reserved for third-party libraries, which can be added as git submodules or via CMake. It is currently empty.
