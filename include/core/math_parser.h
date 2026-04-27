@@ -14,9 +14,9 @@ extern "C" {
 #include <math.h>
 
 typedef struct {
-    Token *left,
+    Node *left,
     Token *self,
-    Token *right
+    Node *right
 } Node;
 
 typedef struct {
