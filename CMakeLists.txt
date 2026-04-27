@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Project metadata
-project(MyUniversalProject LANGUAGES C CXX)
+project(Arithmetics VERSION 1.0.0 LANGUAGES C CXX)
 
 # Compiler options
 set(CMAKE_C_STANDARD 11)
@@ -48,10 +48,10 @@ if(ENABLE_BINDINGS)
 endif()
 
 # Add executable target
-add_executable(MyUniversalProject ${SOURCES})
+add_executable(Arithmetics ${SOURCES})
 
 # Linking third-party libraries (stub section)
-# target_link_libraries(MyUniversalProject <library_name>)
+# target_link_libraries(Arithmetics <library_name>)
 
 # Test target
 enable_testing()
