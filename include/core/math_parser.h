@@ -20,7 +20,10 @@ typedef struct {
 } Node;
 
 typedef struct {
-    char *val,
+    union{
+        char* c_val,
+        float n_val
+    },
     TokenType *type
 } Token
 
@@ -29,22 +32,26 @@ typedef enum {
     NUM,
     FUNC,
     OP1,
-    OP2
+    OP2,
+    ERR
 } TokenType
 
-typedef enum {
-    "sin",
-    "cos",
-    "tan",
-    "log",
-    "ln"
-} Function
+Node* tokenize(char *expr);
+
+Node* create_node(char *val, TokenType type);
+Node* create_node(float val, TokenType type);
+
+Node *parse_expression(char *expr, int *i);
+Node* parse_term(char *expr, int *i);
+Node *parse_factor(char *expr, int *i)
+
+void evaluate_expression(char *expr, float x);
+float evaluate_node(Node N, float x);
+float apply_function(char *func, float val);
+float apply_unary_operator(char *op, char val);
+float apply_binary_operator(float left, char *op, float right);
 
 
-
-float parse_expression(const p* Parser){
-
-}
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "math_parser.h"
 
 /**
@@ -6,74 +7,80 @@
 
 // Constructing the AST
 
-Node* create_node(char *str, TokenType type){
+const char* FUNCTIONS[] = {
+    "sin",
+    "cos",
+    "tan",
+    "log",
+    "ln"
+}
+
+Node *tokenize(char *expr){
+    int i = 0;
+    return Node *parse_expression(expr, &i);
+}
+
+Node* create_node(char *val, TokenType type){
     Node* n = malloc(sizeof(Node));
     n->left = NULL;
     n->right = NULL;
-    n-self->val = str;
     n->self->type = type;
+    n-self->c_val = val;
+}
+Node* create_node(float val, TokenType type){
+    Node* n = malloc(sizeof(Node*));
+    n->left = NULL;
+    n->right = NULL;
+    n->self->type = type;
+    n-self->n_val = val;
 }
 
-Node *make_node(char *expr){
-    int i = 0;
-    return Node *decode_expression(expr, &i);
-}
-
-Node *decode_expression(char *expr, int *i){
-    Node *left = decode_term(expr, i);
+Node *parse_expression(char *expr, int *i){
+    Node *left = parse_term(expr, i);
     *i++;
     if (expr[*i] == "+" || expr[*i] == "-"){
         Node *node = create_node(expr[*i], OP2);
         node->left = left;
         *i++;
-        node->right = decode_expression(expr, i);
+        node->right = parse_expression(expr, i);
         return node;
     } else if (expr[*i] == '\0') {
         return left;
     } else return create_node(concat("Unexpected token at position ", *i, " : ", expr[*i]), ERR);
 }
 
-Node *decode_term(char *expr, int *i){
-    Node *left = decode_factor(expr, i);
+Node* parse_term(char *expr, int *i){
+    Node *left = parse_factor(expr, i);
     *i++;
-    if (expr[*i] == "*" || expr[*i] == "/"){
+    if (expr[*i] == "*" || expr[*i] == "/" || expr[*i] == "^"){
         Node *node = create_node(expr[*i], OP2);
         node->left = left;
         *i++;
-        node->right = decode_expression(expr, i);
+        node->right = parse_expression(expr, i);
+        return node;
+    } else if (isalpha(expr[*i]) || expr[*i] == '('){
+        Node *node = create_node('*', OP2);
+        node->left = left;
+        node->right = parse_expression(expr, i);
         return node;
     } else if (expr[i] == '\0') {
         return left;
     } else return create_node(concat("Unexpected token at position ", *i, " : ", expr[*i]), ERR);
 }
 
-Node *decode_factor(char *expr, int *i){
-    Node *left = decode_value(expr, i);
-    *i++;
-    if (expr[*i] == "^"){
-        Node *node = create_node(expr[*i], OP2);
-        node->left = left;
-        *i++;
-        node->right = decode_expression(expr, i);
-        return node;
-    } else if (expr[i] == '\0') {
-        return left;
-    } else return create_node(concat("Unexpected token at position ", *i, " : ", expr[*i]), ERR);
-}
-
-Node *decode_value(char *expr, int *i){
+Node *parse_factor(char *expr, int *i){
     if (expr[*i] == "+" || expr[*i] == "-"){
         Node *node = create_node(expr[*i], OP1);
         *i++;
-        node->right = decode_expression(expr, i);
+        node->right = parse_expression(expr, i);
         return node;
     } else if (isalpha(expr[*i])){
         int start = *i;
-        while(isalpha(expr[*i])){continue;}
-        char *func = substring(expr, start, *i-start);
-        Node *node = contains(FUNCTIONS, func) ? create_node(func, FUNC) : (*i - start == 1) ? create_node(func, VAR) : create_node(concat("Unexpected Token : ", func), ERR);
+        while(isalpha(expr[*i++])){continue;}
+        char *func = substr(expr, start, *i-start); 
+        Node *node = contains(FUNCTIONS, func) ? create_node(func, FUNC) : (*i - start == 1 && strncmp(func, "x")) ? create_node(func, VAR) : create_node(concat("Unexpected Token : ", func), ERR);
         *i++;
-        node->right = decode_expression(expr, i);
+        node->right = parse_expression(expr, i);
         return node;
     } else if (expr[*i] == "("){
         int start = ++(*i);
@@ -82,13 +89,15 @@ Node *decode_value(char *expr, int *i){
             if (expr[*i] == "(") n_braces++;
             else if (expr[*i] == ")") n_braces--;
         }
-        if (expr[*i++] == "\0" && n_braces > 0) Node *node = create_node("Expected )", ERR);
+        if (expr[*i] == "\0" && n_braces > 0) Node *node = create_node("Expected )", ERR);
         else {
-            char* sub_expr = substring(expr, start, *i-start);
-            return evaluate_expression(sub_expr);
+            char* sub_expr = substr(expr, start, *i-start-2);
+            return evaluate_expression(sub_expr, i);
         }
-    } else if (isnumber) {
-        return number;
+    } else if (isnumeric(expr[*i])) {
+        Node *node = create_node(int(expr[*i]), NUM);
+        *i++;
+        return node;
     } else return create_node(concat("Unexpected Token: ", expr[*i]), ERR);
 }
 
@@ -97,17 +106,18 @@ Node *decode_value(char *expr, int *i){
 // Evaluating the created node
 
 void evaluate_expression(char *expr, float x){
-    Node *N = make_node(*expr)
-    return evaluate_node(*N, x)
+    Node *N = tokenize(*expr);
+    return evaluate_node(*N, x);
 }
 
 float evaluate_node(Node N, float x){
     switch((N.self).type){
-        case NUM: return (N.self).val; break;
+        case NUM: return (N.self).n_val; break;
         case VAR: return x; break;
-        case FUNC: return apply_function((N.self).val, evaluate_node((N.self).right)); break;
-        case OP1: return apply_unary_operator((N.self).val, evaluate_node((N.self).right)); break;
-        case OP2: return apply_binary_operator(evaluate_node((N.self).left), (N.self).val, evaluate_node((N.self).right)); break;
+        case FUNC: return apply_function((N.self).c_val, evaluate_node((N.self).right)); break;
+        case OP1: return apply_unary_operator((N.self).c_val, evaluate_node((N.self).right)); break;
+        case OP2: return apply_binary_operator(evaluate_node((N.self).left), (N.self).c_val, evaluate_node((N.self).right)); break;
+        case ERR: print("Error: %s", N.self.c_val);
         default: return 0;
     }
 }
@@ -127,7 +137,7 @@ float apply_unary_operator(char *op, char val){
     switch(op){
         case "+": return val; break;
         case "-": return -1*val; break;
-        default: return val
+        default: return val;
     }
 }
 
@@ -137,6 +147,7 @@ float apply_binary_operator(float left, char *op, float right){
         case "-": return left - right; break;
         case "*": return left * right; break;
         case "/": return left / right; break;
+        case "^": return math.pow(left, right); break;
         default: return right;
     }
 }
