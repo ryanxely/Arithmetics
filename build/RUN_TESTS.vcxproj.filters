@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\MyLyfe\Domains\SecDom\Activities\Perso\FullStackEngineering\LanguageBased\C&amp;C++\XelyCalc\Arithmetics\build\CMakeFiles\5195d57b83649f483fbdf1543a65ac51\RUN_TESTS_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{3626CFCD-D210-3CCA-9DA0-7F86ECA1EB52}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

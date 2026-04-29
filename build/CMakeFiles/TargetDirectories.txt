@@ -1,0 +1,10 @@
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/CMakeFiles/core_lib.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/CMakeFiles/Arithmetics.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/CMakeFiles/RUN_TESTS.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/CMakeFiles/ALL_BUILD.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/CMakeFiles/ZERO_CHECK.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/tests/CMakeFiles/test_math_parser.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/tests/CMakeFiles/test_newton_raphson.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/tests/CMakeFiles/test_template.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/tests/CMakeFiles/test_utilities.dir
+E:/MyLyfe/Domains/SecDom/Activities/Perso/FullStackEngineering/LanguageBased/C&C++/XelyCalc/Arithmetics/build/tests/CMakeFiles/RUN_TESTS.dir
