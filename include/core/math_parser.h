@@ -5,56 +5,39 @@
 extern "C" {
 #endif
 
-/**
- * @brief Function description for math_parser.
- */
+/* Data Structures*/
+typedef enum {
+    NUM,   /* numeric literal */
+    VAR,   /* variable x      */
+    FUNC,  /* sin/cos/…       */
+    OP1,   /* unary  +/-      */
+    OP2,   /* binary: + - * / ^ */
+    ERR    /* parse error     */
+} TokenType;
 
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+typedef struct Token {
+    TokenType type;
+    char*     c_val;   /* operator / function name / error message */
+    float     n_val;   /* numeric value (NUM nodes)                */
+} Token;
 
-typedef struct {
-    Node *left,
-    Token *self,
-    Node *right
+typedef struct Node {
+    Token*       self;
+    struct Node* left;
+    struct Node* right;
 } Node;
 
-typedef struct {
-    union{
-        char* c_val,
-        float n_val
-    },
-    TokenType *type
-} Token
+/* Public API */
+Node*  tokenize(char* expr);
+float  evaluate_expression(char* expr, float x);
+void   display_tree(Node* n);
 
-typedef enum {
-    VAR,
-    NUM,
-    FUNC,
-    OP1,
-    OP2,
-    ERR
-} TokenType
-
-Node* tokenize(char *expr);
-
-Node* create_node(char *val, TokenType type);
-Node* create_node(float val, TokenType type);
-
-Node *parse_expression(char *expr, int *i);
-Node* parse_term(char *expr, int *i);
-Node *parse_factor(char *expr, int *i)
-
-void evaluate_expression(char *expr, float x);
-float evaluate_node(Node N, float x);
-float apply_function(char *func, float val);
-float apply_unary_operator(char *op, char val);
-float apply_binary_operator(float left, char *op, float right);
-
-
+/* Internal helpers exposed for newton_raphson */
+float  evaluate_node(Node* n, float x);
+void   free_tree(Node* n);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // MATH_PARSER_H
+#endif

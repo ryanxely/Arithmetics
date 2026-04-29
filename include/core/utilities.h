@@ -5,16 +5,14 @@
 extern "C" {
 #endif
 
-/**
- * @brief Function description for utilities.
- */
-
 char* concat(const char* first, ...);
 char* substr(const char* src, int start, int len);
-int contains(const char* word, const char** functions, int len)
+int   contains(const char* word, const char** functions, int len);
+
+void test_utilities();
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // UTILITIES_H
+#endif

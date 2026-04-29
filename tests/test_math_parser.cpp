@@ -1,9 +1,11 @@
 #include <cassert>
+#include <iostream>
 #include "../include/core/math_parser.h"
 
+using namespace std;
+
 void test_math_parser() {
-    // TODO: Add tests for math_parser.
-    assert(true); // Placeholder assertion
+    cout << evaluate_expression("sin(90)", 2) << endl;
 }
 
 int main() {

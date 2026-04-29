@@ -1,0 +1,49 @@
+Folder PATH listing for volume XelyPC2
+Volume serial number is 9A50-AED0
+E:.
+|   .editorconfig
+|   .gitignore
+|   README.md
+|   
++---assets
+|       tree.txt
+|       tree_2.txt
+|       
++---bindings
+|       python_bridge.py
+|       
++---build
++---docs
++---include
+|   +---core
+|   |       math_parser.h
+|   |       module_template.h
+|   |       newton_raphson.h
+|   |       utilities.h
+|   |       
+|   +---io
+|   +---net
+|   \---ui
++---libs
++---scripts
+|       new_module.sh
+|       
++---src
+|   +---core
+|   |       math_parser.c
+|   |       module_template.c
+|   |       newton_raphson.c
+|   |       utilities.c
+|   |       
+|   +---io
+|   |       main.c
+|   |       main.cpp
+|   |       
+|   +---net
+|   \---ui
+\---tests
+        test_math_parser.cpp
+        test_module_template.cpp
+        test_newton_raphson.cpp
+        test_utilities.cpp
+        
