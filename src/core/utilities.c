@@ -44,9 +44,9 @@ char* substr(const char* src, int start, int len) {
 }
 
 
-int contains(const char* word, const char** functions, int len) {
-  for (int i = 0; i < len; i++) {
-    if (strcmp(word, functions[i]) == 0)
+int contains(const char* word, const char** set, int set_length) {
+  for (int i = 0; i < set_length; i++) {
+    if (strcmp(word, set[i]) == 0)
       return 1;
   }
   return 0;

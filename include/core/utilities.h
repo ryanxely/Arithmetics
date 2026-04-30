@@ -7,7 +7,7 @@ extern "C" {
 
 char* concat(const char* first, ...);
 char* substr(const char* src, int start, int len);
-int   contains(const char* word, const char** functions, int len);
+int   contains(const char* word, const char** set, int set_length);
 
 void test_utilities();
 

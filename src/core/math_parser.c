@@ -266,9 +266,9 @@ void free_tree(Node* n) {
     free(n);
 }
 
-void display_tree(Node* n) {
+// void display_tree(Node* n) {
     
-}
+// }
 
 // ——————————————————————
 /*  Forward declarations for the recursive-ascent evaluation helpers           */

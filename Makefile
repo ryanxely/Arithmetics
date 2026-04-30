@@ -3,7 +3,7 @@
 #  Usage: mingw32-make [target]
 # ─────────────────────────────────────────────
 
-$(shell mkdir -p build\cli build\lib build\debug build\release build\tests build\gui 2>nul)
+$(shell mkdir build\cli build\lib build\debug build\release build\tests build\gui 2>nul)
 
 CC       = gcc
 CXX      = g++
