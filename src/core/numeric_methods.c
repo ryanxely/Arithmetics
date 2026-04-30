@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "core/numeric_methods.h"
 #include "core/math_parser.h"
 
@@ -43,8 +44,9 @@ NRResult newton_raphson(const char* expr, float x0, float tol, int max_iter) {
     buf[sizeof(buf) - 1] = '\0';
 
     float x = x0;
-
-    for (int i = 0; i < max_iter; i++) {
+    
+    int i = 0;
+    while (i < max_iter) {
         float fx  = evaluate_expression(buf, x);
         float dfx = numerical_derivative(buf, x);
 
@@ -75,6 +77,19 @@ NRResult newton_raphson(const char* expr, float x0, float tol, int max_iter) {
         }
 
         x = x_new;
+
+        i++;
+    }
+
+    if (i == max_iter){
+        while(--i > 0){
+            /* We recursively test for absolute convergence */
+            if (result.iterations[i].delta_x - result.iterations[i-1].delta_x > 0) return result;
+        }
+
+        /* Converges */
+        result.converged = 1;
+        result.root      = result.iterations[result.iter_count - 1].x_next;
     }
 
     return result;   /* max iterations reached, converged = 0 */
