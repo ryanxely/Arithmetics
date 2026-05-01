@@ -15,6 +15,8 @@ static const char* FUNCTIONS[N_FUNCTIONS] = {
     "sin", "cos", "tan", "log", "ln"
 };
 
+short ERROR_LEVEL = 0;
+
 // ——————————————————————
 /*  Forward declarations for the recursive-descent parser             */
 // ——————————————————————
@@ -323,7 +325,10 @@ float evaluate_node(Node* n, float x) {
         case OP1:  return apply_unary(n->self->c_val, evaluate_node(n->right, x));
         case OP2:  return apply_binary(evaluate_node(n->left,  x), n->self->c_val, evaluate_node(n->right, x));
         case ERR:
-            fprintf(stderr, "Erreur de syntaxe: %s\n", n->self->c_val);
+            if (!ERROR_LEVEL) {
+                fprintf(stderr, "Erreur de syntaxe sur l'expression ! %s\n", n->self->c_val);
+                ERROR_LEVEL = 1;
+            }
             return NAN;
         default:   return 0.0f;
     }

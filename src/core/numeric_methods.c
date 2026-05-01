@@ -96,6 +96,13 @@ NRResult newton_raphson(const char* expr, float x0, float tol, int max_iter) {
 }
 
 void nr_print(const NRResult* r) {
+    if (r->iter_count == 0) {
+        printf("Aucune iteration a afficher.\n");
+        return;
+    } else if (r->iter_count == 1 && (isnan(r->iterations[0].fx_n) || isnan(r->iterations[0].dfx_n))) {
+        printf("Echec de la methode de Newton-Raphson: f(x) ou f'(x) est indefini au point de depart x0 = %.6f\n", r->x0);
+        return;
+    }
     printf("%-70s\n", "--------------------------------------------------------------------------");
     printf("%-70s\n", "                        Methode de Newton Raphson");
     printf("%-70s\n", "--------------------------------------------------------------------------");

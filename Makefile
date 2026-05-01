@@ -1,9 +1,7 @@
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 #  ARITHMETICS — Master Makefile
 #  Usage: mingw32-make [target]
-# ─────────────────────────────────────────────
-
-$(shell mkdir build\cli build\lib build\debug build\release build\tests build\gui 2>nul)
+# -----------------------------------------------------------------
 
 CC       = gcc
 CXX      = g++
@@ -15,33 +13,39 @@ CORE = src/core/numeric_methods.c \
         src/core/utilities.c
 
 # Create output folders (runs silently on every make call)
-$(shell mkdir build\cli build\lib build\debug build\release build\tests build\gui 2>nul)
+$(shell mkdir build/cli build/cli/seperate-files build/lib build/dll build/debug build/release build/tests build/gui 2>nul)
 
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 #  BUILD TARGETS
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 # Default — only build what is currently ready
 all: cli
 
 cli:
+	$(CXX) $(CORE) src/io/$(module)_index.c $(CXXFLAGS) -o build/cli/seperate-files/$(module).exe
+
+cli-aio: #All In One — single entry point for all modules (with module selection at runtime (interactive menu))
 	$(CC) $(CORE) src/io/main.c $(CFLAGS) -o build/cli/arithmetics.exe
 
-cli-cpp:
-	$(CXX) $(CORE) src/io/main.cpp $(CXXFLAGS) -o build/cli/arithmetics.exe
-
 debug:
+	$(CC) $(CORE) src/io/$(module)_index.c $(CFLAGS) -g -O0 -o build/debug/seperate-files/$(module).exe
+
+debug-aio:
 	$(CC) $(CORE) src/io/main.c $(CFLAGS) -g -O0 -o build/debug/arithmetics.exe
 
 release:
+	$(CC) $(CORE) src/io/$(module)_index.c $(CFLAGS) -O2 -o build/release/seperate-files/$(module).exe
+
+release-aio:
 	$(CC) $(CORE) src/io/main.c $(CFLAGS) -O2 -o build/release/arithmetics.exe
 
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 #  LIBRARY TARGETS
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 dll:
-	$(CC) $(CORE) $(CFLAGS) -shared -fPIC -o build/lib/arithmetics.dll
+	$(CC) $(CORE) $(CFLAGS) -shared -fPIC -o build/dll/arithmetics.dll
 
 wasm:
 	emcc $(CORE) -Iinclude \
@@ -64,9 +68,9 @@ gui:
         $(CXXFLAGS) -Ilibs/imgui -lSDL2 -lopengl32 \
         -o build/gui/arithmetics.exe
 
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 #  TEST TARGETS
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 test:
 	$(CXX) tests/test_$(module).cpp $(CORE) $(CXXFLAGS) -o build/tests/test_$(module).exe
@@ -83,9 +87,9 @@ test-all:
 	@echo " All tests completed"
 	@echo "==============================="
 
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 #  UTILITY TARGETS
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 new-module:
 	git-bash ./scripts/new_module.sh $(name)
@@ -101,7 +105,7 @@ clean:
 help:
 	@echo.
 	@echo  ARITHMETICS — available commands
-	@echo  ────────────────────────────────────────────────────────
+	@echo  --------------------------------------------------------------
 	@echo  mingw32-make all              builds default (cli only for now)
 	@echo  mingw32-make cli              builds CLI exe (C entry point)
 	@echo  mingw32-make cli-cpp          builds CLI exe (C++ entry point)
