@@ -30,7 +30,7 @@ static Node* parse_factor   (const char* expr, int* i);
 // ——————————————————————
 
 /* Create a node carrying a string value (operator / function / error). */
-static Node* create_node_str(const char* val, TokenType type) {
+static Node* create_node_str(const char* val, ParserTokenType type) {
     Node*  n = (Node*)malloc(sizeof(Node));
     Token* t = (Token*)malloc(sizeof(Token));
     if (!n || !t) { free(n); free(t); return NULL; }
@@ -316,7 +316,7 @@ static float apply_binary(float left, const char* op, float right) {
 
 float evaluate_node(Node* n, float x) {
     if (!n) return 0.0f;
-    TokenType type = n->self->type;
+    ParserTokenType type = n->self->type;
 
     switch (type) {
         case NUM:  return n->self->n_val;

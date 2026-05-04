@@ -1,0 +1,6 @@
+2026-05-04 03:35:30|Évaluateur f(x)|eval "sin(x) + x^2" ; x=1.0000  ->  1.017450
+2026-05-04 03:35:58|Méthodes Numériques|newton-raphson "x^2 - 2" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-04 03:58:28|Méthodes Numériques|newton-raphson "sin(x) - 4ln(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-04 03:58:38|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-04 03:58:51|Évaluateur f(x)|eval "sin(x) + x^2" ; x=1.0000  ->  1.017450
+2026-05-04 03:59:05|Évaluateur f(x)|eval "sin(2x) - 4ln(x)" ; x=1.0000  ->  16.228302

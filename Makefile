@@ -12,6 +12,18 @@ CORE = src/core/numeric_methods.c \
         src/core/math_parser.c    \
         src/core/utilities.c
 
+IMGUI_DIR = libs/imgui
+IMGUI_SRC = $(IMGUI_DIR)/imgui.cpp              \
+            $(IMGUI_DIR)/imgui_draw.cpp          \
+            $(IMGUI_DIR)/imgui_tables.cpp        \
+            $(IMGUI_DIR)/imgui_widgets.cpp       \
+            $(IMGUI_DIR)/imgui_demo.cpp          \
+            $(IMGUI_DIR)/backends/imgui_impl_sdl2.cpp    \
+            $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
+
+GUI_FLAGS = -Ilibs/imgui -Ilibs/imgui/backends
+GUI_LIBS  = -lSDL2 -lopengl32 -lgdi32
+
 # Create output folders (runs silently on every make call)
 $(shell mkdir build/cli build/cli/seperate-files build/lib build/dll build/debug build/release build/tests build/gui 2>nul)
 
@@ -61,12 +73,21 @@ lib:
         build/lib/math_parser.o    \
         build/lib/utilities.o
 
-gui:
+gui-cpp:
 	$(CXX) $(CORE) src/ui/app.cpp \
         libs/imgui/imgui.cpp \
         libs/imgui/backends/imgui_impl_sdl2.cpp \
         $(CXXFLAGS) -Ilibs/imgui -lSDL2 -lopengl32 \
         -o build/gui/arithmetics.exe
+
+gui:
+	$(CXX) $(CORE) src/ui/arithmetics.cpp $(IMGUI_SRC) \
+	$(CXXFLAGS) $(GUI_FLAGS) $(GUI_LIBS) \
+	-IC:\Tools\mingw64\include \
+	-IC:\Tools\mingw64\include\SDL2 \
+	-LC:\Tools\mingw64\lib \
+	-DSDL_MAIN_HANDLED \
+	-o build/gui/arithmetics.exe
 
 # -----------------------------------------------------------------
 #  TEST TARGETS

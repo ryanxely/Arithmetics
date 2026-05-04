@@ -6,17 +6,17 @@ extern "C" {
 #endif
 
 /* Data Structures*/
-typedef enum {
+typedef enum ParserTokenType {
     NUM,   /* numeric literal */
     VAR,   /* variable x      */
     FUNC,  /* sin/cos/…       */
     OP1,   /* unary  +/-      */
     OP2,   /* binary: + - * / ^ */
     ERR    /* parse error     */
-} TokenType;
+} ParserTokenType;
 
 typedef struct Token {
-    TokenType type;
+    ParserTokenType type;
     char*     c_val;   /* operator / function name / error message */
     float     n_val;   /* numeric value (NUM nodes)                */
 } Token;
