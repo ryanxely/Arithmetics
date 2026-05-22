@@ -18,9 +18,11 @@ CFLAGS   = -Wall -Wextra -std=c11   -Iinclude -lm
 CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude -lm
 
 # Add new module source files here when you create a new module
-CORE = 	src/core/numeric_methods.c \
-		src/core/math_parser.c     \
-		src/core/utilities.c
+CORE-HELPERS = 	src/core/math_parser.c     \
+				src/core/utilities.c	   
+CORE-MODULES = 	src/core/numeric_methods.c     \
+				src/core/numeric_integration.c 
+	
 
 # -----------------------------------------------------------------
 #  LIBRARY CONFIGURATION
@@ -75,12 +77,12 @@ all: cli-aio
 
 # Build CLI for a specific module:  mingw32-make cli module=numeric_methods
 cli:
-	$(CXX) $(CORE) src/io/$(module)_io.c $(CXXFLAGS) \
+	$(CXX) $(CORE-HELPERS) src/core/$(module).c src/io/$(module)_io.c $(CXXFLAGS) \
 	-o build/cli/seperate-files/$(module).exe
 
 # Build all-in-one CLI with interactive module selection menu
 cli-aio:
-	$(CXX) $(CORE) src/io/main_index.cpp $(CXXFLAGS) \
+	$(CXX) $(CORE-HELPERS) $(CORE-MODULES) src/io/main.cpp $(CXXFLAGS) \
 	-o build/cli/arithmetics.exe
 
 # -----------------------------------------------------------------
@@ -88,11 +90,11 @@ cli-aio:
 # -----------------------------------------------------------------
 
 debug:
-	$(CXX) $(CORE) src/io/$(module)_io.c $(CXXFLAGS) \
+	$(CXX) $(CORE-HELPERS) src/core/$(module).c src/io/$(module)_io.c $(CXXFLAGS) \
 	-g -O0 -o build/debug/seperate-files/$(module).exe
 
 debug-aio:
-	$(CXX) $(CORE) src/io/main_index.cpp $(CXXFLAGS) \
+	$(CXX) $(CORE-HELPERS) $(CORE-MODULES) src/io/main.cpp $(CXXFLAGS) \
 	-g -O0 -o build/debug/arithmetics.exe
 
 # -----------------------------------------------------------------
@@ -100,11 +102,11 @@ debug-aio:
 # -----------------------------------------------------------------
 
 release:
-	$(CXX) $(CORE) src/io/$(module)_io.c $(CXXFLAGS) \
+	$(CXX) $(CORE-HELPERS) src/core/$(module).c src/io/$(module)_io.c $(CXXFLAGS) \
 	-O2 -o build/release/seperate-files/$(module).exe
 
 release-aio:
-	$(CXX) $(CORE) src/io/main_index.cpp $(CXXFLAGS) \
+	$(CXX) $(CORE-HELPERS) $(CORE-MODULES) src/io/main.cpp $(CXXFLAGS) \
 	-O2 -o build/release/arithmetics.exe
 
 # -----------------------------------------------------------------
@@ -113,25 +115,28 @@ release-aio:
 
 # Shared library (.dll) — callable from Python / web server
 dll:
-	$(CC) $(CORE) $(CFLAGS) -shared -fPIC \
+	$(CC) $(CORE-HELPERS) $(CORE-MODULES) $(CFLAGS) -shared -fPIC \
 	-o build/dll/arithmetics.dll
 
 # Static library (.a) — linkable into other C/C++ projects
 lib:
-	$(CC) $(CFLAGS) -c src/core/numeric_methods.c \
+	$(CC) $(CFLAGS) -c src/core/numeric_methods.c 	  \
 	-o build/lib/numeric_methods.o
-	$(CC) $(CFLAGS) -c src/core/math_parser.c     \
+	$(CC) $(CFLAGS) -c src/core/math_parser.c     	  \
 	-o build/lib/math_parser.o
-	$(CC) $(CFLAGS) -c src/core/utilities.c       \
+	$(CC) $(CFLAGS) -c src/core/utilities.c      	  \
 	-o build/lib/utilities.o
+	$(CC) $(CFLAGS) -c src/core/numeric_integration.c \
+	-o build/lib/numeric_integration.o		  \
 	ar rcs build/lib/arithmetics.a            \
 	build/lib/numeric_methods.o               \
 	build/lib/math_parser.o                   \
-	build/lib/utilities.o
+	build/lib/utilities.o					  \
+	build/lib/numeric_integration.o
 
 # WebAssembly — requires Emscripten installed separately
 wasm:
-	emcc $(CORE) -Iinclude                                          \
+	emcc $(CORE-HELPERS) $(CORE-MODULES) -Iinclude                                          \
 		-s EXPORTED_FUNCTIONS='["_evaluate_expression","_newton_raphson"]' \
 		-s EXPORTED_RUNTIME_METHODS='["ccall","cwrap"]'            \
 		-o build/lib/arithmetics.js
@@ -141,7 +146,7 @@ wasm:
 # -----------------------------------------------------------------
 
 gui:
-	$(CXX) $(CORE) src/ui/main.cpp $(IMGUI_SRC) \
+	$(CXX) $(CORE-HELPERS) $(CORE-MODULES) src/ui/main.cpp $(IMGUI_SRC) \
 	$(CXXFLAGS) $(GUI_FLAGS) $(GUI_LIBS)               \
 	-o build/gui/arithmetics.exe
 	@copy libs\SDL2\bin\SDL2.dll build\gui\SDL2.dll >nul 2>&1 || \
@@ -153,21 +158,24 @@ gui:
 
 # Test a single module:  mingw32-make test module=numeric_methods
 test:
-	$(CXX) tests/test_$(module).cpp $(CORE) $(CXXFLAGS) \
+	$(CXX) tests/test_$(module).cpp $(CORE-HELPERS) src/core/$(module).c $(CXXFLAGS) \
 	-o build/tests/test_$(module).exe
 	./build/tests/test_$(module).exe
 
 # Run all tests in sequence
 test-all:
-	$(CXX) tests/test_numeric_methods.cpp $(CORE) $(CXXFLAGS) \
+	$(CXX) tests/test_numeric_methods.cpp $(CORE-HELPERS) src/core/numeric_methods.c $(CXXFLAGS) \
 	-o build/tests/test_numeric_methods.exe
 	./build/tests/test_numeric_methods.exe
-	$(CXX) tests/test_math_parser.cpp $(CORE) $(CXXFLAGS)     \
+	$(CXX) tests/test_math_parser.cpp $(CORE-HELPERS) src/core/math_parser.c $(CXXFLAGS)     \
 	-o build/tests/test_math_parser.exe
 	./build/tests/test_math_parser.exe
-	$(CXX) tests/test_utilities.cpp $(CORE) $(CXXFLAGS)       \
+	$(CXX) tests/test_utilities.cpp $(CORE-HELPERS) src/core/utilities.c $(CXXFLAGS)       \
 	-o build/tests/test_utilities.exe
 	./build/tests/test_utilities.exe
+	$(CXX) tests/test_numeric_integration.cpp $(CORE-HELPERS) src/core/numeric_integration.c $(CXXFLAGS) \
+	-o build/tests/test_numeric_integration.exe
+	./build/tests/test_numeric_integration.exe
 	@echo "==============================="
 	@echo " All tests passed."
 	@echo "==============================="

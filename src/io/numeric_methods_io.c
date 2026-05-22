@@ -1,6 +1,6 @@
 /**
  * @file numeric_methods_main.c
- * @author your name (you@domain.com)
+ * @author Ryan
  * @brief Main entry point for the numerical methods CLI
  * @version 0.1
  * @date 2026-05-01
@@ -26,10 +26,15 @@
     Instead of using cli menus, we enable users to get advantage of the cli cache memory
     Hence will just type the command and set parameters with a help guide */
 
-static void indent(int n){
-    while(n--){
-        printf("   ");
-    }
+static void indent(int n, int list_item){
+    if (list_item)
+        while(n--){
+            printf(" - ");
+        }
+    else
+        while(n--){
+            printf("   ");
+        }
 }
 
 static void help(const char* module, int indent_level){
@@ -41,11 +46,11 @@ static void help(const char* module, int indent_level){
         indent_level++;
         indent(indent_level);
         printf("OPTIONS\n");
-        indent(indent_level+1);
+        indent(indent_level+1, 1);
         printf("x=<valeur_initiale>\t: Valeur initiale pour la methode de Newton-Raphson (defaut: 1.0)\n");
-        indent(indent_level+1);
+        indent(indent_level+1, 1);
         printf("tol=<tolerance>\t: Tolerance pour la methode de Newton-Raphson (defaut: 1e-6)\n");
-        indent(indent_level+1);
+        indent(indent_level+1, 1);
         printf("nmax=<iterations_maximales>\t: Nombre maximum d'iterations pour la methode de Newton-Raphson (defaut: 100)\n");
         printf("\n");
         indent(indent_level);
@@ -56,7 +61,7 @@ static void help(const char* module, int indent_level){
         indent(indent_level+1);
         printf("%s <methode> <<options>>\n", module);
         printf("\n");
-        indent(indent_level);
+        indent(indent_level, 1);
         printf("METHODES\n");
         help("newton-raphson", indent_level+1);
     }
