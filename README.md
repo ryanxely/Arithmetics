@@ -1,61 +1,179 @@
-# README.md
+# Arithmétique
 
-# Project Title
+Une bibliothèque mathématique numérique modulaire et une application construites en C/C++, développées comme projet scolaire à la Faculté des Sciences Douala - Année 2. Le projet fournit des implémentations réutilisables des méthodes numériques de base, exposées via une CLI, une interface graphique moderne et des bibliothèques partagées pour l'intégration externe.
 
-Arithmetics in C
+---
 
-# Description
+## Fonctionnalités
 
-This project is intended to promote several arithmetic concepts and functions reusable for projects and university students
+- **Détecteur de racines Newton-Raphson** — recherche itérative de racines avec sortie de tableau d'itération complet
+- **Analyseur d'expressions mathématiques** — analyse et évalue les expressions arbitraires en `x` (supporte `sin`, `cos`, `tan`, `log`, `ln`, `^`, multiplication implicite)
+- **Visualiseur AST** — affiche graphiquement l'arborescence d'analyse de toute expression
+- **Interface graphique moderne** — construite avec Dear ImGui + SDL2 + OpenGL3, avec historique d'opération persistant
+- **Cibles de construction multiples** — CLI, GUI, bibliothèque partagée (.dll), bibliothèque statique (.a), WebAssembly (.js)
 
-# About the Author
-  - **Name :** Ryan Axel
-  - **Email :** ryanxely@gmail.com
-  - **Phone :** +237681803185
+---
 
-# Note for users
+## Prérequis
 
-## Builds (/build)
+Les outils suivants doivent être installés sur votre système avant la compilation :
 
-  - **IO (CLI)**
+| Outil | Objectif | Installation |
+|---|---|---|
+| **MinGW-w64** (gcc/g++) | Compilateur C/C++ | [winget install MinGW.MinGW](https://winget.run/) ou [mingw-w64.org](https://www.mingw-w64.org/) |
+| **Git** | Contrôle de version + sous-modules | [git-scm.com](https://git-scm.com/) |
+| **curl** | Téléchargement de SDL2 lors de l'initialisation | Fourni avec Windows 10+ et Git Bash |
+| **mingw32-make** | Système de compilation | Inclus avec MinGW |
 
-The CLI builds are made up release files for each module
+> **Emscripten** n'est requis que pour la cible `wasm`. **SDL2** et **ImGui** sont installés automatiquement par `mingw32-make init`.
 
-  - **Release**
+---
 
-For the moment the release is the optimized CLI
+## Mise en route
 
-### How to use it
+### 1. Cloner le référentiel
 
+```bash
+git clone https://github.com/ryanxely/arithmetics.git
+cd arithmetics
+```
 
-# Note for developers
+### 2. Initialiser l'environnement
 
-## Includes (/include)
+Exécutez ceci **une seule fois** après le clonage. Il télécharge ImGui (sous-module git) et SDL2, et les place dans `libs/`:
 
-  - **Core Files**
+```bash
+mingw32-make init
+```
 
-  These files not only show the structure of the modules but also give info about the exposed functions used by external modules like gui or other integrations
+Cela va :
+- Initialiser `libs/imgui/` via sous-module git
+- Télécharger le paquet SDL2 2.30.3 MinGW depuis les versions officielles de SDL sur GitHub
+- Extraire les en-têtes, les fichiers lib et `SDL2.dll` dans `libs/SDL2/`
 
-## Source Files (/src)
+### 3. Compiler
 
-  - **Core Files**
+```bash
+# Compiler la CLI interactive (par défaut)
+mingw32-make
 
-Here we have the implementation of different modules.
+# Compiler l'application GUI
+mingw32-make gui
 
-  - **IO (CLI)**
+# Exécuter la GUI
+./build/gui/arithmetics.exe
+```
 
-    - Each source file corresponds to a cli build. It is the entry point for any aspect of interest of the program (consistent program functionality). In out case, the program is composed of modules, which will hence be seperated for cli in **/seperate-files**
-    - We'll also have a final full version in an interactive shell
+---
 
+## Cibles de compilation
 
-  - **GUI**
+| Commande | Résultat | Description |
+|---|---|---|
+| `mingw32-make` | `build/cli/arithmetics.exe` | CLI interactive (tous les modules) |
+| `mingw32-make cli module=x` | `build/cli/seperate-files/x.exe` | CLI pour un module spécifique |
+| `mingw32-make gui` | `build/gui/arithmetics.exe` | Application graphique |
+| `mingw32-make dll` | `build/dll/arithmetics.dll` | Bibliothèque partagée pour Python/web |
+| `mingw32-make lib` | `build/lib/arithmetics.a` | Bibliothèque statique |
+| `mingw32-make wasm` | `build/lib/arithmetics.js` | WebAssembly (nécessite Emscripten) |
+| `mingw32-make debug module=x` | `build/debug/...` | Compilation de débogage avec symboles |
+| `mingw32-make release module=x` | `build/release/...` | Compilation optimisée pour la version finale |
+| `mingw32-make test module=x` | exécute le test | Tester un module spécifique |
+| `mingw32-make test-all` | exécute tous les tests | Exécuter tous les tests de module |
+| `mingw32-make new-module name=x` | génère les fichiers | Créer un squelette de nouveau module |
+| `mingw32-make clean` | — | Supprimer toute la sortie compilée |
+| `mingw32-make help` | — | Afficher toutes les commandes disponibles |
 
-Here we combine the whole project structure as a single program.
+---
 
-### How to use it
+## Structure fonctionnelle du projet
 
-# Left Overs
+```
+arithmetics/
+│
+├── include/core/          En-têtes — API publique de chaque module
+│   ├── math_parser.h      Types et fonctions de l'analyseur d'expressions
+│   ├── numeric_methods.h  Types et fonctions de Newton-Raphson
+│   └── utilities.h        Utilitaires de chaîne (substr, concat, contains)
+│
+├── src/core/              Implémentations — mathématiques pures, pas d'UI, pas d'E/S
+│   ├── math_parser.c      Analyseur de descente récursive + évaluateur AST
+│   ├── numeric_methods.c  Newton-Raphson avec capture d'itération complète
+│   └── utilities.c        Fonctions d'assistance en chaîne
+│
+├── src/io/                Points d'entrée CLI
+│   ├── main_index.cpp     Shell interactif tout-en-un
+│   └── numeric_methods_io.c  CLI autonome pour les méthodes numériques
+│
+├── src/ui/                Application GUI
+│   └── main.cpp    Application Dear ImGui (tableau de bord, modules, historique)
+│
+├── tests/                 Tests unitaires
+│   ├── test_numeric_methods.cpp
+│   ├── test_math_parser.cpp
+│   └── test_utilities.cpp
+│
+├── libs/                  Bibliothèques tierces (remplies par init)
+│   ├── imgui/             Dear ImGui (sous-module git)
+│   └── SDL2/              En-têtes SDL2, lib, dll
+│
+├── bindings/              Modèles de pont de langage
+│
+├── scripts/               Automatisation pour développeurs
+│   └── new_module.sh      Génère les fichiers .h, .c et de test pour un nouveau module
+│
+├── build/                 Sortie compilée
+├── docs/                  Documentation du projet
+├── Makefile               Fichier de compilation principal
+└── README.md              Ce fichier
+```
 
-  - **src/core/organiser.c** : Still thinking about how this will be useful for our project. Willing to organise all modules and get an organiser which the full releases (gui app, arithmetics.dll, arithmetics.wasm, arithmetics.js, etc...) will use to organise the modules
+---
 
-  - Still searching for a means to prevent future operations on newton_raphson once an expression error has been detected on the input function
+## Ajouter un nouveau module
+
+Utilisez le script fourni pour générer automatiquement les fichiers squelette :
+
+```bash
+mingw32-make new-module name=gcd
+```
+
+Cela crée :
+- `include/core/gcd.h` — en-tête avec signatures de fonction documentées
+- `src/core/gcd.c` — modèle de mise en œuvre
+- `tests/test_gcd.cpp` — modèle de fichier de test
+
+Ensuite, ajoutez `src/core/gcd.c` à la variable `CORE` dans le `Makefile` et vous êtes prêt à compiler.
+
+---
+
+## Architecture
+
+Le projet suit une séparation stricte des préoccupations dans trois zones :
+
+**Core** (`src/core/`) — calcul pur, pas de sortie, pas de dépendances sur l'UI ou l'E/S. Chaque algorithme vit ici en tant que module autonome. Cette couche peut être compilée en tant que bibliothèque partagée et appelée depuis Python, JavaScript (via WebAssembly) ou tout autre langage.
+
+**Interface** (`src/io/`, `src/ui/`) — consomme le cœur. Les couches CLI et GUI appelent les fonctions de base et présentent les résultats. Elles ne contiennent jamais de logique mathématique.
+
+**Tests** (`tests/`) — vérifient le cœur en isolation, avant que toute interface ne soit impliquée.
+
+---
+
+## Limitations connues / Travaux en cours
+
+- La détection d'erreur d'expression lors de la validation des entrées Newton-Raphson est encore en cours de raffinage
+- La cible WebAssembly nécessite l'installation séparée d'Emscripten
+
+---
+
+## Auteurs
+
+| **ID** | **Nom** |
+|---|---|
+| 22S74587 | TCHEUTCHOUA FONGUELE RYAN AXEL |
+| 22S74303 | NGON TAKOM YVES-MARTIN |
+| 22S74125 | MBIADJEU NANA KARL-ANTHONY |
+
+> _Faculté des Sciences - Douala_
+> _Sous la supervision de Dr Noumsi Auguste_
+

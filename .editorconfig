@@ -1,6 +1,5 @@
 # .editorconfig
 
-# This file enforces consistent formatting across editors.
 root = true
 
 [*]

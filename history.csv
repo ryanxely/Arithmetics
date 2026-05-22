@@ -1,6 +1,38 @@
-2026-05-04 03:35:30|Évaluateur f(x)|eval "sin(x) + x^2" ; x=1.0000  ->  1.017450
-2026-05-04 03:35:58|Méthodes Numériques|newton-raphson "x^2 - 2" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
-2026-05-04 03:58:28|Méthodes Numériques|newton-raphson "sin(x) - 4ln(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
-2026-05-04 03:58:38|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
-2026-05-04 03:58:51|Évaluateur f(x)|eval "sin(x) + x^2" ; x=1.0000  ->  1.017450
-2026-05-04 03:59:05|Évaluateur f(x)|eval "sin(2x) - 4ln(x)" ; x=1.0000  ->  16.228302
+2026-05-05 08:11:46|Méthodes Numériques|newton-raphson "Cos(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:11:54|Méthodes Numériques|newton-raphson "cos(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:12:12|Méthodes Numériques|newton-raphson "cos(2x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:12:25|Méthodes Numériques|newton-raphson "x^2 - 4" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:12:37|Méthodes Numériques|newton-raphson "2cos(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:13:43|Méthodes Numériques|newton-raphson "sonx" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:14:05|Méthodes Numériques|newton-raphson "Sin(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:14:11|Méthodes Numériques|newton-raphson "sin(x)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:30:59|Évaluateur f(x)|eval "x^2 - 2" ; x=1.0000  ->  -1.000000
+2026-05-05 08:36:00|Évaluateur f(x)|eval "2/x" ; x=0.0000  ->  nan
+2026-05-05 08:36:30|Méthodes Numériques|newton-raphson "2/x" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:36:43|Méthodes Numériques|newton-raphson "y" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:39:57|Méthodes Numériques|newton-raphson "x" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:41:14|Méthodes Numériques|newton-raphson "y" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:50:56|Évaluateur f(x)|eval "x^2 -2" ; x=0.0000  ->  -2.000000
+2026-05-05 08:50:56|Évaluateur f(x)|eval "x^2 -2" ; x=0.0000  ->  -2.000000
+2026-05-05 08:53:00|Évaluateur f(x)|eval "sin(2x) - 4ln(x)" ; x=0.0000  ->  inf
+2026-05-05 08:53:12|Évaluateur f(x)|eval "sin(2x) - 4ln(x)" ; x=1.0000  ->  16.228302
+2026-05-05 08:53:28|Évaluateur f(x)|eval "sin(2x) - 4ln(x^2-2)" ; x=1.0000  ->  nan
+2026-05-05 08:54:04|Évaluateur f(x)|eval "sin(2x) - 4ln(x^2/2)" ; x=1.0000  ->  19.000891
+2026-05-05 08:56:38|Évaluateur f(x)|eval "sin(2x) - 4ln(c^2/2)" ; x=1.0000  ->  nan
+2026-05-05 08:56:49|Méthodes Numériques|newton-raphson "z" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 08:57:02|Méthodes Numériques|newton-raphson "x" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 09:02:38|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 09:37:13|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=100
+2026-05-05 09:37:37|Évaluateur f(x)|eval "sin(2x) - 4ln(x^2/2)" ; x=1.0000  ->  19.000891
+2026-05-05 14:24:50|Évaluateur f(x)|eval "sin(2x) - 4ln(x^2/2)" ; x=3.3000  ->  9.529542
+2026-05-05 14:25:48|Évaluateur f(x)|eval "sin(2x) - 4ln(x^2/2)" ; x=3.0000  ->  10.281613
+2026-05-05 14:27:17|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=3
+2026-05-05 14:28:08|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=3
+2026-05-05 14:28:12|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=4
+2026-05-05 14:28:27|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=5
+2026-05-05 14:28:30|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=6
+2026-05-05 14:28:33|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=7
+2026-05-05 14:28:40|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=8
+2026-05-05 14:28:44|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=7
+2026-05-05 14:28:50|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(x^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=8
+2026-05-05 14:36:07|Méthodes Numériques|newton-raphson "sin(2x) - 4ln(t^2/2)" ; x₀=1.0000 ; tol=1e-06 ; nmax=8

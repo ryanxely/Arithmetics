@@ -1,6 +1,6 @@
 // =============================================================================
-//  Arithmetics — Interface Graphique Moderne
-//  src/ui/arithmetics.cpp
+//  Arithmetics - Interface Graphique Moderne
+//  src/ui/main.cpp
 //
 //  Modules :
 //    - Page::Accueil              : tableau de bord + historique
@@ -368,7 +368,7 @@ static void RenderBareLatérale(float w, float h) {
     ImGui::SetCursorPos({20.0f, 22.0f});
     ImGui::TextColored(Theme::Accent, "ARITHMETICS");
     ImGui::SetCursorPos({20.0f, ImGui::GetCursorPosY()});
-    ImGui::TextColored(Theme::TextMuted, "v1.0  —  Outils Numériques");
+    ImGui::TextColored(Theme::TextMuted, "v1.0");
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 14.0f);
     ImGui::SetCursorPosX(20.0f);
     ImGui::Separator();
@@ -405,14 +405,14 @@ static void RenderBareLatérale(float w, float h) {
     ImGui::SetCursorPosX(20.0f);
     ImGui::TextColored(Theme::TextMuted, "Faculté des Sciences");
     ImGui::SetCursorPosX(20.0f);
-    ImGui::TextColored(Theme::TextMuted, "Projet INF448 — 2026");
+    ImGui::TextColored(Theme::TextMuted, "Projet INF448 - Arithmetics");
 
     ImGui::EndChild();
     ImGui::PopStyleColor();
 }
 
 // =============================================================================
-//  ACCUEIL — Tableau de bord
+//  ACCUEIL - Tableau de bord
 // =============================================================================
 static void RenderAccueil(float cw, float ch) {
     const float GAP = 16.0f;
@@ -557,7 +557,7 @@ static void RenderMethodesNumeriques(float cw, float ch) {
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10.0f);
 
         ImGui::SetCursorPosX(IP);
-        ImGui::TextColored(Theme::TextMuted, "f(x)  —  expression en x");
+        ImGui::TextColored(Theme::TextMuted, "f(x)");
         ImGui::SetCursorPosX(IP);
         ImGui::SetNextItemWidth(LW - IP*2);
         ImGui::InputText("##ne", g_etat.nr_expr, sizeof(g_etat.nr_expr));
@@ -567,7 +567,7 @@ static void RenderMethodesNumeriques(float cw, float ch) {
         if (ImGui::BeginTable("##nrpt", 2, 0, {LW-IP*2, 0})) {
             ImGui::TableSetupColumn("l", ImGuiTableColumnFlags_WidthFixed, 130.0f);
             ImGui::TableSetupColumn("v", ImGuiTableColumnFlags_WidthStretch);
-            LigneParam("x\u2080  (valeur initiale)");
+            LigneParam("x0 (valeur initiale)");
             ImGui::SetNextItemWidth(-1);
             ImGui::InputFloat("##nx0", &g_etat.nr_x0, 0.1f,1.0f,"%.4f");
             LigneParam("Tolérance");
@@ -632,7 +632,7 @@ static void RenderMethodesNumeriques(float cw, float ch) {
             NRResult* r = &g_etat.nr_result;
             ImGui::SetCursorPosX(IP);
             if (r->converged) {
-                Badge("Convergé", Theme::Success);
+                Badge("Converge", Theme::Success);
                 ImGui::SameLine();
                 char buf[64];
                 snprintf(buf,sizeof(buf),
@@ -642,7 +642,12 @@ static void RenderMethodesNumeriques(float cw, float ch) {
                 ImGui::TextColored(Theme::TextMuted,
                     "%d itération(s)", r->iter_count);
             } else {
-                Badge("Non convergé", Theme::Error);
+                Badge("Ne converge pas", Theme::Error);
+                if(isnan(r->iter_count <= 1)){
+                    ImGui::SetCursorPosX(IP);
+                    ImGui::TextColored(Theme::TextMuted,
+                        "Vérifiez la syntaxe de votre fonction ou essayez un autre x\u2080 ou augmentez les itérations.");
+                } else 
                 ImGui::SetCursorPosX(IP);
                 ImGui::TextColored(Theme::TextMuted,
                     "Essayez un autre x\u2080 ou augmentez les itérations.");
@@ -668,7 +673,7 @@ static void RenderMethodesNumeriques(float cw, float ch) {
                         ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("f(x_n)",
                         ImGuiTableColumnFlags_WidthStretch);
-                    ImGui::TableSetupColumn("f'(x_n)",
+                    ImGui::TableSetupColumn("f '(x_n)",
                         ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("x_(n+1)",
                         ImGuiTableColumnFlags_WidthStretch);
@@ -737,7 +742,7 @@ static void RenderEvaluateurFonction(float cw, float ch) {
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 12.0f);
 
         ImGui::SetCursorPosX(IP);
-        ImGui::TextColored(Theme::TextMuted, "f(x)  —  expression en x");
+        ImGui::TextColored(Theme::TextMuted, "f(x)  -  expression en x");
         ImGui::SetCursorPosX(IP);
         ImGui::SetNextItemWidth(LW - IP*2);
         ImGui::InputText("##ee", g_etat.ev_expr, sizeof(g_etat.ev_expr));
@@ -924,7 +929,7 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE,  8);
 
     SDL_Window* window = SDL_CreateWindow(
-        "Projet TPE — Arithmetics",
+        "Projet INF448 - Arithmetics",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         1280, 760,
         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE |
@@ -1000,10 +1005,10 @@ int main() {
         float cw  = ww - sw - cp*2.0f;
         float ch  = wh - cp*2.0f;
 
-        // Barre latérale — bord gauche, pleine hauteur, zéro offset
+        // Barre latérale - bord gauche, pleine hauteur, zéro offset
         RenderBareLatérale(sw, wh);
 
-        // Zone de contenu — padding uniforme sur tous les côtés
+        // Zone de contenu - padding uniforme sur tous les côtés
         ImGui::SetCursorPos({sw + cp, cp});
         ImGui::BeginChild("##content", {cw, ch}, false);
 
