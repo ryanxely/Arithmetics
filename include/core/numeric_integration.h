@@ -13,6 +13,7 @@ extern "C" {
 
 typedef struct {
     char methode[20];
+    char  expr[512];
     double a;
     double b;
     int n;

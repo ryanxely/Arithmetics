@@ -6,6 +6,8 @@
 ResultatIntegration trapeze(char *expr, double a, double b, int n) {
     ResultatIntegration res;
     strcpy(res.methode, "Trapeze");
+    strncpy(res.expr, expr, sizeof(res.expr) - 1);
+    res.expr[sizeof(res.expr) - 1] = '\0';
     res.a = a;
     res.b = b;
     res.n = n;
@@ -13,7 +15,7 @@ ResultatIntegration trapeze(char *expr, double a, double b, int n) {
 
     for (int i = 0; i <= n; i++) {
         res.x[i] = a + i * res.h;
-        res.fx[i] = evaluate_expression(expr, res.x[i]);
+        res.fx[i] = evaluate_expression(res.expr, res.x[i]);
     }
 
     res.somme_totale = 0.0;
@@ -40,6 +42,8 @@ ResultatIntegration trapeze(char *expr, double a, double b, int n) {
 ResultatIntegration simpson(char *expr,double a, double b, int n) {
     ResultatIntegration res;
     strcpy(res.methode, "Simpson");
+    strncpy(res.expr, expr, sizeof(res.expr) - 1);
+    res.expr[sizeof(res.expr) - 1] = '\0';
     res.a = a;
     res.b = b;
     res.n = n;
@@ -47,7 +51,7 @@ ResultatIntegration simpson(char *expr,double a, double b, int n) {
 
     for (int i = 0; i <= n; i++) {
         res.x[i] = a + i * res.h;
-        res.fx[i] = evaluate_expression(expr, res.x[i]);
+        res.fx[i] = evaluate_expression(res.expr, res.x[i]);
     }
 
     res.somme_totale = 0.0;
