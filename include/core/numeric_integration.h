@@ -29,7 +29,6 @@ typedef struct {
 ResultatIntegration trapeze(char *expr, double a, double b, int n);
 ResultatIntegration simpson(char *expr, double a, double b, int n);
 
-
 #ifdef __cplusplus
 }
 #endif
