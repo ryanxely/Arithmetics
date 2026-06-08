@@ -1,12 +1,13 @@
 # Arithmétique
 
-Une bibliothèque mathématique numérique modulaire et une application construites en C/C++, développées comme projet scolaire à la Faculté des Sciences Douala - Année 2. Le projet fournit des implémentations réutilisables des méthodes numériques de base, exposées via une CLI, une interface graphique moderne et des bibliothèques partagées pour l'intégration externe.
+Une bibliothèque mathématique numérique modulaire et une application construites en C/C++, développées comme projet projet du cours INF448. Le projet fournit des implémentations réutilisables des méthodes numériques de base, exposées via une CLI, une interface graphique moderne et des bibliothèques partagées pour l'intégration externe.
 
 ---
 
 ## Fonctionnalités
 
 - **Détecteur de racines Newton-Raphson** — recherche itérative de racines avec sortie de tableau d'itération complet
+- **Intégration numérique des fonctions** — calcule l'intégration d'une fonction avec les méthodes trapèze et simpson
 - **Analyseur d'expressions mathématiques** — analyse et évalue les expressions arbitraires en `x` (supporte `sin`, `cos`, `tan`, `log`, `ln`, `^`, multiplication implicite)
 - **Visualiseur AST** — affiche graphiquement l'arborescence d'analyse de toute expression
 - **Interface graphique moderne** — construite avec Dear ImGui + SDL2 + OpenGL3, avec historique d'opération persistant
@@ -29,7 +30,21 @@ Les outils suivants doivent être installés sur votre système avant la compila
 
 ---
 
-## Mise en route
+## Avis aux testeurs/utilisateurs
+
+Le dossier `build/` contient les sorties de différents types :
+
+- `build/cli/arithmetics.exe` : Exécutable CLI AIO (All-In-One), qui assemble tous les modules intégrés dans ce projet, à lancer depuis un terminal pour tester les commandes interactives.
+> _Remarque: La nouvelle mise à jour des intégration numériques n'est pas encore intégrée dans l'executable AIO_
+- `build/cli/seperate-files/` : Exécutables CLI séparés par modules.
+- `build/gui/arithmetics.exe` : Application graphique, à ouvrir depuis `build/gui/`.
+> _Remarque: La bibliothèque `build/gui/SDL2.dll` doit toujours être dans le même repertoire que l'appli GUI lors de l'execution, au cas où vous désirez télécharger l'appli dans vos machines_
+- `build/dll/arithmetics.dll` : Bibliothèque partagée, utilisable depuis un programme C/C++ ou via des bindings externes.
+- `build/lib/arithmetics.a` : Bibliothèque statique, à lier dans un projet C/C++ en ajoutant `include/core/` aux chemins d'inclusion.
+- `build/lib/arithmetics.js` : Module WebAssembly (si compilé), à importer depuis une page web ou un projet JS/WASM.
+
+
+## Avis aux contributeurs
 
 ### 1. Cloner le référentiel
 
@@ -94,22 +109,26 @@ arithmetics/
 ├── include/core/          En-têtes — API publique de chaque module
 │   ├── math_parser.h      Types et fonctions de l'analyseur d'expressions
 │   ├── numeric_methods.h  Types et fonctions de Newton-Raphson
+│   ├── numeric_integration.h  Types et fonctions de l'intégration numérique (trapèze et simpson)
 │   └── utilities.h        Utilitaires de chaîne (substr, concat, contains)
 │
 ├── src/core/              Implémentations — mathématiques pures, pas d'UI, pas d'E/S
 │   ├── math_parser.c      Analyseur de descente récursive + évaluateur AST
 │   ├── numeric_methods.c  Newton-Raphson avec capture d'itération complète
+│   ├── numeric_methods.c  Implémentation des méthodes d'intégration numérique
 │   └── utilities.c        Fonctions d'assistance en chaîne
 │
 ├── src/io/                Points d'entrée CLI
 │   ├── main_index.cpp     Shell interactif tout-en-un
 │   └── numeric_methods_io.c  CLI autonome pour les méthodes numériques
+│   └── numeric_integration_io.c  CLI autonome pour l'intégration numérique
 │
 ├── src/ui/                Application GUI
 │   └── main.cpp    Application Dear ImGui (tableau de bord, modules, historique)
 │
 ├── tests/                 Tests unitaires
 │   ├── test_numeric_methods.cpp
+│   ├── test_numeric_integration.cpp
 │   ├── test_math_parser.cpp
 │   └── test_utilities.cpp
 │
@@ -132,10 +151,10 @@ arithmetics/
 
 ## Ajouter un nouveau module
 
-Utilisez le script fourni pour générer automatiquement les fichiers squelette :
+Utilisez le script fourni pour générer automatiquement les fichiers squelette (exp. gcd):
 
 ```bash
-mingw32-make new-module name=gcd
+mingw32-make new-module name=gcd 
 ```
 
 Cela crée :
@@ -174,6 +193,6 @@ Le projet suit une séparation stricte des préoccupations dans trois zones :
 | 22S74303 | NGON TAKOM YVES-MARTIN |
 | 22S74125 | MBIADJEU NANA KARL-ANTHONY |
 
-> _Faculté des Sciences - Douala_
-> _Sous la supervision de Dr Noumsi Auguste_
+> _Faculté des Sciences - Douala - 2025/2026_
+> _Sous la supervision de **Dr Noumsi Auguste**_
 
